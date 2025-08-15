@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% block content %}
+        <form method="get">
+            <input type="text" name="search">
+            <button type="submit">Buscar</button>
+        </form>
+
+        <p><a href="{% url 'criar-anuncio'%}">Criar Anuncio</a></p>
+
+        {%for anuncio in anuncios %}
+            <a href="{% url 'detalhes-anuncio' anuncio.pk %}">
+                <img src="{{anuncio.imagem.url}}">
+                <h3>{{anuncio.titulo}} </h3>
+                <h3>{{anuncio.valor}}</h3>
+                <p>{{anuncio.estado}}</p>
+            </a>
+            {%endfor%}
+    {% endblock%}
+</body>
+</html>
