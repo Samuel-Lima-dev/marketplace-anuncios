@@ -12,7 +12,9 @@
             <button type="submit">Buscar</button>
         </form>
 
-        <p><a href="{% url 'criar-anuncio'%}">Criar Anuncio</a></p>
+        {% if user.is_authenticated %}
+            <p><a href="{% url 'criar-anuncio'%}">Criar Anuncio</a></p>
+        {%endif%}
 
         {%for anuncio in anuncios %}
             <a href="{% url 'detalhes-anuncio' anuncio.pk %}">

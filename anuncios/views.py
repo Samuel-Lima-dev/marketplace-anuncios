@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from .models import Anuncio
 from .form import CriarAnuncioForm
@@ -20,10 +21,21 @@ class Anunciosview(View):
             {'anuncios': anuncios}
         )
 
-        
+class DetalhesAnuncio(View):
 
-class CriarAnuncioView(View):
-    
+    def get(self, request, pk):
+        anuncio = Anuncio.objects.get(pk=pk)
+
+        return render(
+            request,
+            'detalhes_anuncio.html',
+            {'detalhes_anuncio': anuncio}
+        )
+
+
+        
+class CriarAnuncioView(LoginRequiredMixin, View):
+    login_url = 'login'
     def get(self, request):
         formulario_criacao = CriarAnuncioForm()
 
@@ -51,21 +63,8 @@ class CriarAnuncioView(View):
         )
 
 
-class DetalhesAnuncio(View):
-
-    def get(self, request, pk):
-        anuncio = Anuncio.objects.get(pk=pk)
-
-        return render(
-            request,
-            'detalhes_anuncio.html',
-            {'detalhes_anuncio': anuncio}
-        )
-
-
-
-class AtualizarAnuncioView(View):
-
+class AtualizarAnuncioView(LoginRequiredMixin, View):
+    login_url = 'login'
     def get(self, request, pk):
         anuncio = Anuncio.objects.get(pk=pk)
         formulario = CriarAnuncioForm(instance=anuncio)
@@ -90,8 +89,8 @@ class AtualizarAnuncioView(View):
             {'form_update': formulario}
         )
 
-class DeletarAnuncio(View):
-
+class DeletarAnuncio(LoginRequiredMixin, View):
+    login_url = 'login'
     def get(self, requet, pk):
         anuncio = Anuncio.objects.get(pk=pk)
         return render(
