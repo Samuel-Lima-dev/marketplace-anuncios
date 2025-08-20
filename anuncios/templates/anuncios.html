@@ -17,13 +17,15 @@
         {%endif%}
 
         {%for anuncio in anuncios %}
-            <a href="{% url 'detalhes-anuncio' anuncio.pk %}">
-                <img src="{{anuncio.imagem.url}}">
-                <h3>{{anuncio.titulo}} </h3>
-                <h3>{{anuncio.valor}}</h3>
-                <p>{{anuncio.estado}}</p>
-            </a>
-            {%endfor%}
+            {% if anuncio %}
+                <a href="{% url 'detalhes-anuncio' anuncio.pk %}">
+                    <img src="{{anuncio.imagem.url}}">
+                    <h3>{{anuncio.titulo}} </h3>
+                    <h3>{{anuncio.valor}}</h3>
+                    <p>{{anuncio.estado}}</p>
+                </a>
+            {% endif %}    
+        {%endfor%}
     {% endblock%}
 </body>
 </html>
