@@ -14,7 +14,10 @@ class Anunciosview(ListView):
 
 
     def get_queryset(self):
-        queryset = super().get_queryset().filter()
+        queryset = super().get_queryset()
+
+        if self.request.user.is_authenticated:
+            queryset = queryset.exclude(usuario=self.request.user)
     
         search_query = self.request.GET.get('search')
         if search_query:

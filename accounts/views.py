@@ -20,7 +20,7 @@ class CriarUsuarioView(View):
         if formulario.is_valid():
             usuario = formulario.save()
             login(request, usuario) 
-            return redirect('anuncio')
+            return redirect('anuncios')
         
         return render(
             request,
@@ -46,7 +46,7 @@ class LoginUsuarioView(View):
         usuario = authenticate(request, username = username, password=password)
         if usuario is not None:
             login(request, usuario)
-            return redirect('anuncio')
+            return redirect('anuncios')
         else:
             formulario_login = AuthenticationForm()
             return render(
@@ -58,4 +58,4 @@ class LoginUsuarioView(View):
 
 def logout_usuario(request):
     logout(request)
-    return redirect('anuncio')
+    return redirect('anuncios')
