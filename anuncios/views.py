@@ -1,8 +1,8 @@
 from django.urls import reverse_lazy, reverse
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Anuncio
-from .form import CriarAnuncioForm
+from .forms import CriarAnuncioForm
 
 
 
@@ -16,9 +16,10 @@ class Anunciosview(ListView):
     def get_queryset(self):
         queryset = super().get_queryset()
 
+        #Não retornar os anuncios dpo usuaio logado 
         if self.request.user.is_authenticated:
             queryset = queryset.exclude(usuario=self.request.user)
-    
+        
         search_query = self.request.GET.get('search')
         if search_query:
             queryset = queryset.filter(titulo__icontains=search_query)

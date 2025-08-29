@@ -1,61 +1,81 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.forms import AuthenticationForm
 from django.views import View
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth import authenticate, login, logout
+from .forms import NaturalPersonForm, LegalPersonForm
 
 
-class CriarUsuarioView(View):
 
+#Cadastro de pessoa fisica
+class CreateNaturalUserView(View):
+    
     def get(self, request):
-        formulario_cadastro = UserCreationForm()
+        form = NaturalPersonForm()
 
         return render(
             request,
-            'cadastro_usuario.html',
-            {'form': formulario_cadastro}
+            'create_natural_person.html',
+            {'form': form}
         )
-    
+
+
     def post(self, request):
-        formulario = UserCreationForm(request.POST)
-        if formulario.is_valid():
-            usuario = formulario.save()
-            login(request, usuario) 
-            return redirect('anuncios')
         
+        form = NaturalPersonForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('anuncicadastro-pessoa-fisicaos')
+        else:
+            return render(
+                request,
+                'create_natural_person.html',
+                {'form': form}
+            )
+        
+
+#Cadstro de pessoa juridica
+class CreateLegalPersonUserView(View):
+    def get(self, request):
+        form = LegalPersonForm()
+
         return render(
             request,
-            'cadastro_usuario.html',
-            {'form': formulario}
-        )
-    
-class LoginUsuarioView(View):
+            'create_legal_person.html',
+            {'form': form}
+        )  
+
+    def post(self, request):
+        ...
+
+
+#Login
+class AuthenticationFormUserView(View):
 
     def get(self, request):
-        formulario_login = AuthenticationForm()
+        form = AuthenticationForm()
 
         return render(
             request,
             'login.html',
-            {'form_login': formulario_login}
+            {'form': form}
         )
-    
+
     def post(self, request):
         username = request.POST['username']
         password = request.POST['password']
-
-        usuario = authenticate(request, username = username, password=password)
-        if usuario is not None:
-            login(request, usuario)
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
             return redirect('anuncios')
         else:
-            formulario_login = AuthenticationForm()
+            form = AuthenticationForm()
             return render(
-                request, 
+                request,
                 'login.html',
-                {'form_login': formulario_login}
-
+                {'form': form}
             )
 
-def logout_usuario(request):
+def logout_view(request):
     logout(request)
     return redirect('anuncios')

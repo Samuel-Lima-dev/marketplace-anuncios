@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../static/home_page.css">
+    <link rel="stylesheet" href="../../static/base.css">
+    <title>{% block title%} Makteplace {%endblock%}</title>
+</head>
+<body>
+
+    <head class="head_conteiner">
+        
+        <div class="div-conteiner-head">
+
+            <h1 class="home"><a href="{% url 'anuncios' %}">Home</a></h1>
+            <form method="get" class="form-search">
+                <input type="text" name="search">
+                <button type="submit">Buscar</button>
+            </form>
+
+            {% if user.is_authenticated %}
+                <div><a href="{% url 'criar-anuncio' %}">Anunciar</a></div>
+                <a href="{% url 'login'%}">Sair</a>
+                <p>Bem vindo, {{user}}</p>
+
+            {%else%}
+                <div ><a href="{% url 'login' %}" class="head-login">Login</a></div>
+
+            {%endif%}
+
+        </div>
+
+    </head>
+    
+    <main>
+        {% block content %}
+
+        {% endblock %}
+    </main>
+</body>
+</html>

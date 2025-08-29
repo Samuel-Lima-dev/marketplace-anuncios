@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
 
 
 class Categoria(models.Model):
@@ -15,7 +15,7 @@ class Anuncio(models.Model):
         ("Usado", "Usado"),
         ("Seminovo", "Seminovo")
     ]
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     titulo = models.CharField(max_length=200, null=False, blank=False)
     descricao = models.TextField(null=True, blank=True)
     estado = models.CharField(max_length=100, choices=estado_produto, default='novo')

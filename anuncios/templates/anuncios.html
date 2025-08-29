@@ -1,31 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    {% block content %}
-        <form method="get">
-            <input type="text" name="search">
-            <button type="submit">Buscar</button>
-        </form>
+{% extends "base.html" %}
+{% load static %}
 
-        {% if user.is_authenticated %}
-            <p><a href="{% url 'criar-anuncio'%}">Criar Anuncio</a></p>
-        {%endif%}
 
-        {%for anuncio in anuncios %}
-            {% if anuncio %}
+{% block content %}
+
+<div class="home-conteiner">
+
+    {%for anuncio in anuncios %}
+        {% if anuncio %}
+            <div class="card">
                 <a href="{% url 'detalhes-anuncio' anuncio.pk %}">
                     <img src="{{anuncio.imagem.url}}">
                     <h3>{{anuncio.titulo}} </h3>
                     <h3>{{anuncio.valor}}</h3>
-                    <p>{{anuncio.estado}}</p>
                 </a>
-            {% endif %}    
-        {%endfor%}
-    {% endblock%}
-</body>
-</html>
+            </div>
+        {% endif %}    
+    {%endfor%}
+
+</div>
+{% endblock%}

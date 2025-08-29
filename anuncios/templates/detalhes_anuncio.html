@@ -1,16 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+{%extends "base.html"%}
+
+
     {%block content%}
     <img src="{{detalhes_anuncio.imagem.url}}">
         {{detalhes_anuncio}}
     {%endblock%}
     <p><a href="{% url 'atualizar-anuncio-form' detalhes_anuncio.pk%}">Editar Anuncio</a></p>
     <p><a href="{% url 'excluir_anuncio' detalhes_anuncio.pk %}">Excluir Anuncio</a></p>
-</body>
-</html>

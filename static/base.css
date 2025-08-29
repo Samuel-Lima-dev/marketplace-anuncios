@@ -1,0 +1,38 @@
+.div-conteiner-head{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 20px;
+    background-color: blue;
+}
+
+.div-conteiner-head h1{
+    color: white;
+}
+
+.form-search{
+    display: flex;
+}
+
+.form-search input{
+    width: 300px;
+    padding: 10px;
+    border-radius: 5px 0px 0px 5px;
+    border: 1px solid rgb(248, 248, 248 );
+}
+
+.form-search button{
+    width: 70px;
+    border: 1px solid  brown;
+    border-radius: 0px 5px 5px 0px;
+    background-color: brown;
+    color: white;
+
+}
+
+.head-login{
+    color: white;
+}
+a{
+    text-decoration: none;
+}
