@@ -1,12 +1,12 @@
 {%extends "base.html"%}
     <div class="conteiner-form-anuncio">
-
+    {%block content%}
         <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
 
-            {%block content%}
-                {{form}}
-            {%endblock%}
+            {% csrf_token %}
+            {{form}}
+            
             <button type="submit">Anunciar</button>
         </form>
+    {%endblock%}
     </div>

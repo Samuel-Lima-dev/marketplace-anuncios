@@ -6,12 +6,12 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 #Colocando E-mail como campo principal do login
 class UserManager(BaseUserManager):
     
-    def create_user(self, email, password=None):
+    def create_user(self, email, password=None, **extra_fields):
 
         if not email:
             raise ValueError('O email é um campo obrigatório')
         
-        user = self.model(email=self.normalize_email(email))
+        user = self.model(email=self.normalize_email(email), **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
@@ -20,7 +20,7 @@ class UserManager(BaseUserManager):
 
         #Garantindo que os campos de permissão do superusuario seja True por padrão
         extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefauld('is_superuser', True)
+        extra_fields.setdefault('is_superuser', True)
 
         #Verificar se os valores estão corretamente como True
         if extra_fields.get('is_staff') is not True:
@@ -34,6 +34,7 @@ class UserManager(BaseUserManager):
         
 
 class User(AbstractUser):
+    username = None
     email = models.EmailField(unique=True)
     
     USERNAME_FIELD = 'email'
