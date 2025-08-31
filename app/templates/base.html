@@ -23,7 +23,7 @@
 
             {% if user.is_authenticated %}
                 <div><a href="{% url 'criar-anuncio' %}">Anunciar</a></div>
-                <a href="{% url 'login'%}">Sair</a>
+                <a href="{% url 'logout'%}">Sair</a>
                 <p>Bem vindo, {{user}}</p>
 
             {%else%}

@@ -2,11 +2,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 
 
-
 #Criando autenticação personalisada
 #Colocando E-mail como campo principal do login
-
-
 class UserManager(BaseUserManager):
     
     def create_user(self, email, password=None):
@@ -19,15 +16,20 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
     
-    def create_superuser(self, email, password):
+    def create_superuser(self, email, password, **extra_fields):
 
-        user = self.create_user(
-            email,
-            password=password,
-        )
-        user.is_admin=True
-        user.save(using=self._db)
-        return user
+        #Garantindo que os campos de permissão do superusuario seja True por padrão
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefauld('is_superuser', True)
+
+        #Verificar se os valores estão corretamente como True
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError('SuperUser must have is_staff=True')
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError('SuperUser must have is_superuser=True')
+        
+       
+        return self.create_user(email, password, **extra_fields)
         
         
 

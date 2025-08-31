@@ -5,18 +5,15 @@ from .models import Anuncio
 from .forms import CriarAnuncioForm
 
 
-
-class Anunciosview(ListView):
-
+class AnunciosView(ListView):
     model = Anuncio
     template_name = 'anuncios.html'
     context_object_name = 'anuncios'
 
-
     def get_queryset(self):
         queryset = super().get_queryset()
 
-        #Não retornar os anuncios dpo usuaio logado 
+        #Não retornar os anuncios do usuário logado 
         if self.request.user.is_authenticated:
             queryset = queryset.exclude(usuario=self.request.user)
         
@@ -25,7 +22,6 @@ class Anunciosview(ListView):
             queryset = queryset.filter(titulo__icontains=search_query)
 
         return queryset
-
 
 
 class DetalhesAnuncio(DetailView):

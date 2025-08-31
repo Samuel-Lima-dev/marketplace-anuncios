@@ -5,19 +5,16 @@ from django.views import View
 from .forms import NaturalPersonForm, LegalPersonForm
 
 
-
 #Cadastro de pessoa fisica
 class CreateNaturalUserView(View):
     
     def get(self, request):
         form = NaturalPersonForm()
-
         return render(
             request,
             'create_natural_person.html',
             {'form': form}
         )
-
 
     def post(self, request):
         
@@ -25,7 +22,7 @@ class CreateNaturalUserView(View):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('anuncicadastro-pessoa-fisicaos')
+            return redirect('anuncios')
         else:
             return render(
                 request,
@@ -36,9 +33,9 @@ class CreateNaturalUserView(View):
 
 #Cadstro de pessoa juridica
 class CreateLegalPersonUserView(View):
+
     def get(self, request):
         form = LegalPersonForm()
-
         return render(
             request,
             'create_legal_person.html',
@@ -46,15 +43,23 @@ class CreateLegalPersonUserView(View):
         )  
 
     def post(self, request):
-        ...
-
+        form = LegalPersonForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('anuncios')
+        else:
+            return render(
+                request,
+                'create_natural_person.html',
+                {'form': form}
+            )
 
 #Login
 class AuthenticationFormUserView(View):
 
     def get(self, request):
         form = AuthenticationForm()
-
         return render(
             request,
             'login.html',
