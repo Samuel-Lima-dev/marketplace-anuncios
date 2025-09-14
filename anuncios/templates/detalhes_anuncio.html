@@ -2,8 +2,12 @@
 
 
     {%block content%}
-    <img src="{{detalhes_anuncio.imagem.url}}">
-        {{detalhes_anuncio}}
+        <img src="{{detalhes_anuncio.imagem.url}}">
+        {{detalhes_anuncio.usuario.pk}}
+        <a href="{% url 'start_chat' detalhes_anuncio.pk%}">
+        Iniciar Conversa
+    </a>
     {%endblock%}
+    
     <p><a href="{% url 'atualizar-anuncio-form' detalhes_anuncio.pk%}">Editar Anuncio</a></p>
     <p><a href="{% url 'excluir_anuncio' detalhes_anuncio.pk %}">Excluir Anuncio</a></p>

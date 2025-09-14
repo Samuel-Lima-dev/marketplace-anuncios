@@ -21,6 +21,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -29,8 +31,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'anuncios',
     'accounts',
-    
-    
+    'chat',
 ]
 
 MIDDLEWARE = [
@@ -60,6 +61,7 @@ TEMPLATES = [
     },
 ]
 
+ASGI_APPLICATION = 'app.asgi.application'
 WSGI_APPLICATION = 'app.wsgi.application'
 
 
@@ -122,3 +124,12 @@ MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'accounts.User'
+
+
+#Confirugação do channels_layer 
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
+        
+    }
+}

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from anuncios.views import *
@@ -7,7 +7,8 @@ from accounts.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-
+    path('chat/', include('chat.urls')),
+    
     path('anuncios/', AnunciosView.as_view(), name='anuncios'),
     path('criar-anuncio/', CriarAnuncioView.as_view(), name='criar-anuncio'),
     path('detalhes/<int:pk>/', DetalhesAnuncio.as_view(), name='detalhes-anuncio'),

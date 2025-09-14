@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <style>
+        
+    </style>
+</head>
+<body>
+
+    <div class="chat-container">
+        <div class="chat-header">
+            Conversa sobre: {{ chat_room.product.titulo }}
+        </div>
+
+        <div id="chat-log">
+            {% for msg in message %}
+                <div class="message {% if msg.sender == user %}me{% else %}other{% endif %}">
+
+                    <p>{{msg.sender}} - {{ msg.content }}</p>
+                </div>
+            {% endfor %}
+        </div>
+
+        <form id="chat-form" class="chat-form">
+            <input id="chat-message-input" type="text" placeholder="Digite sua mensagem..." autocomplete="off">
+            <button id="chat-message-submit" type="submit">Enviar</button>
+        </form>
+    </div>
+
+    {{ room_id|json_script:"json-room-id" }}
+    {{ user.username|json_script:"json-current-user" }}
+
+    <script>
+        const roomID = JSON.parse(document.getElementById('json-room-id').textContent);
+        const currentUser = JSON.parse(document.getElementById('json-current-user').textContent);
+        const chatLog = document.querySelector('#chat-log');
+        const messageInput = document.querySelector('#chat-message-input');
+        const chatForm = document.querySelector('#chat-form');
+
+        // Rola o chat para a última mensagem assim que a página carregar
+        chatLog.scrollTop = chatLog.scrollHeight;
+        
+        const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+        const chatSocket = new WebSocket(
+            `${protocol}://${window.location.host}/ws/chat/${roomID}/`
+        );
+
+        function addMessageToLog(data) {
+            // Esta função continua funcionando perfeitamente para NOVAS mensagens
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message');
+            if (data.sender === currentUser) {
+                messageDiv.classList.add('me');
+                messageDiv.innerHTML = `<p>${data.message}</p>`;
+            } else {
+                messageDiv.classList.add('other');
+                messageDiv.innerHTML = `<div class="sender-name">${data.sender}</div><p>${data.message}</p>`;
+            }
+            chatLog.appendChild(messageDiv);
+            chatLog.scrollTop = chatLog.scrollHeight;
+        }
+
+        chatSocket.onopen = function(e) {
+            console.log("Conexão WebSocket aberta!");
+            messageInput.focus();
+        };
+
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            addMessageToLog(data);
+        };
+
+        chatSocket.onclose = function(e) {
+            console.error('A conexão WebSocket foi fechada inesperadamente.');
+        };
+
+        chatForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const message = messageInput.value.trim();
+            if (message) {
+                chatSocket.send(JSON.stringify({'message': message}));
+                messageInput.value = '';
+            }
+        });
+    </script>
+</body>
+</html>

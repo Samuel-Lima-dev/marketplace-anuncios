@@ -31,7 +31,7 @@ class NaturalPersonForm(CustomUserForm):
         fields = ['name', 'cpf', 'email', 'date_birth', 'password1', 'password2']
 
     #Garante que tudo funcione, caso contrario, nada será salvo
-    @transaction.atomic #
+    @transaction.atomic 
     def save(self, commit=True):
         user = super().save(commit=False)
         
@@ -52,6 +52,7 @@ class LegalPersonForm(CustomUserForm):
     class Meta(CustomUserForm.Meta):
         fields = ('name', 'cnpj', 'email', 'password1', 'password2')
 
+    @transaction.atomic
     def save(self, commit=True):
         user = super().save(commit=False)
 
