@@ -1,5 +1,7 @@
+from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Anuncio
 from .forms import CriarAnuncioForm
@@ -43,19 +45,34 @@ class CriarAnuncioView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
         
-class AtualizarAnuncioView(LoginRequiredMixin, UpdateView):
+class AtualizarAnuncioView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Anuncio
     form_class = CriarAnuncioForm
     template_name = 'atualizar_anuncio.html'
     login_url = 'login'
+
+    #Garantir que apenas o criador do anuncio tenta acesso para modifica-lo
+    def test_func(self):
+        return self.get_object().usuario == self.request.user
+    #Personalizar mensagem de erro
+    #Redirecionar o usuario para página principal
+    def handle_no_permission(self):
+        messages.error(self.request, 'Você não tem permissão para editar o anuncio')
+        return redirect('anuncios')
 
     def get_success_url(self):
         #Redirecionar para pagina de detalhes após à atualização
         return reverse('detalhes-anuncio', kwargs={'pk': self.object.pk})
 
 
-class DeletarAnuncio(LoginRequiredMixin, DeleteView):
+class DeletarAnuncio(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Anuncio
     template_name = 'deletar_anuncio.html'
     success_url = reverse_lazy('anuncios')
+
+    def test_func(self):
+        return self.get_object().usuario == self.request.user
+    
+    def handle_no_permission(self):
+        messages.error(self.request, 'Você não tem permissão para deletar o anuncio')
     
