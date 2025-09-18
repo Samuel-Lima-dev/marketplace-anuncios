@@ -24,6 +24,7 @@
             {% if user.is_authenticated %}
                 <div><a href="{% url 'criar-anuncio' %}">Anunciar</a></div>
                 <a href="{% url 'logout'%}">Sair</a>
+                <a href="{%url 'chat_list'%}">Chat</a>
                 <p>Bem vindo, {{user}}</p>
 
             {%else%}

@@ -1,8 +1,6 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
-from accounts.models import User
-from anuncios.models import Anuncio
 from .models import ChatRoom, Message
 
 
@@ -30,7 +28,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
         )
 
     async def receive(self, text_data):
-
         text_data = json.loads(text_data)
         message_text = text_data['message']
 
@@ -50,8 +47,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     #Receber a mensagem do grupo da sala
     async def chat_message(self, event):
-        message=event['message']
-        sender=event['sender']
+        message = event['message']
+        sender = event['sender']
         sent_at = event['sent_at']
 
         #Envia a mensagem de volta para o cliente
@@ -63,7 +60,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def save_message(self, message_content):
-        
         chat_room = ChatRoom.objects.get(pk=self.room_id)
         
         message = Message.objects.create(

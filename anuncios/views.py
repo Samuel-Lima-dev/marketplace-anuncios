@@ -14,7 +14,6 @@ class AnunciosView(ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-
         #Não retornar os anuncios do usuário logado 
         if self.request.user.is_authenticated:
             queryset = queryset.exclude(usuario=self.request.user)
@@ -25,12 +24,10 @@ class AnunciosView(ListView):
 
         return queryset
 
-
 class DetalhesAnuncio(DetailView):
     model = Anuncio
     template_name = 'detalhes_anuncio.html'
     context_object_name = 'detalhes_anuncio'
-
 
 class CriarAnuncioView(LoginRequiredMixin, CreateView):
     model = Anuncio
@@ -51,7 +48,7 @@ class AtualizarAnuncioView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     template_name = 'atualizar_anuncio.html'
     login_url = 'login'
 
-    #Garantir que apenas o criador do anuncio tenta acesso para modifica-lo
+    #Garantir que apenas o criador do anuncio tenha acesso para modifica-lo
     def test_func(self):
         return self.get_object().usuario == self.request.user
     #Personalizar mensagem de erro
