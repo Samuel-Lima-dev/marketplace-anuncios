@@ -1,6 +1,8 @@
 from django.shortcuts import redirect
 from django.urls import reverse_lazy, reverse
 from django.contrib import messages
+from django.db import models
+from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Anuncio
@@ -20,7 +22,7 @@ class AnunciosView(ListView):
         
         search_query = self.request.GET.get('search')
         if search_query:
-            queryset = queryset.filter(titulo__icontains=search_query)
+            queryset = queryset.filter(models.Q(titulo__icontains=search_query) | models.Q(estado__icontains=search_query))
 
         return queryset
     
