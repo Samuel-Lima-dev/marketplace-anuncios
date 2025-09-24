@@ -10,6 +10,7 @@ urlpatterns = [
     path('chat/', include('chat.urls')),
     
     path('anuncios/', AnunciosView.as_view(), name='anuncios'),
+    path('meus_anuncios/', MeusAnuncios.as_view(), name='meus_anuncios'),
     path('criar-anuncio/', CriarAnuncioView.as_view(), name='criar-anuncio'),
     path('detalhes/<int:pk>/', DetalhesAnuncio.as_view(), name='detalhes-anuncio'),
     path('atualizar/<int:pk>/', AtualizarAnuncioView.as_view(), name='atualizar-anuncio-form' ),

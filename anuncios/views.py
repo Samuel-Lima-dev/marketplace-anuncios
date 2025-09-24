@@ -23,6 +23,14 @@ class AnunciosView(ListView):
             queryset = queryset.filter(titulo__icontains=search_query)
 
         return queryset
+    
+class MeusAnuncios(ListView):
+    models = Anuncio
+    template_name = 'meus_anuncios.html'
+    context_object_name = 'anuncios'
+
+    def get_queryset(self):
+        return Anuncio.objects.filter(usuario=self.request.user)
 
 class DetalhesAnuncio(DetailView):
     model = Anuncio

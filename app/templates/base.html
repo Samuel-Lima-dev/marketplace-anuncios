@@ -16,13 +16,14 @@
         <div class="div-conteiner-head">
 
             <h1 class="home"><a href="{% url 'anuncios' %}">Home</a></h1>
+            <div><a href="{% url 'criar-anuncio' %}">Anunciar</a></div>
             <form method="get" class="form-search">
                 <input type="text" name="search">
                 <button type="submit">Buscar</button>
             </form>
 
             {% if user.is_authenticated %}
-                <div><a href="{% url 'criar-anuncio' %}">Anunciar</a></div>
+                <a href="{% url 'meus_anuncios'%}">Meus anuncios</a>
                 <a href="{% url 'logout'%}">Sair</a>
                 <a href="{%url 'chat_list'%}">Chat</a>
                 <p>Bem vindo, {{user}}</p>

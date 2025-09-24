@@ -1,0 +1,7 @@
+{% extends "base.html"%}
+
+{%block content%}
+    {%for anuncio in anuncios%}
+        <a href="{% url 'detalhes-anuncio' anuncio.pk%}">{{anuncio}}</a>
+    {%endfor%}
+{%endblock%}

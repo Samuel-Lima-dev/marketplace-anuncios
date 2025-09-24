@@ -14,11 +14,7 @@ def chat_room_view(request, anuncio_id):
     buyer = request.user
 
     if buyer == seller:
-       return render(
-            request,
-            'error_page.html',
-            {'message': 'Você não pode iniciar uma conversa consigo mesmo'} 
-        )
+       raise PermissionDenied('Você não pode iniciar uma conversa consigo mesmo')
 
     chat_room, created = ChatRoom.objects.get_or_create(
         product=anuncio,
